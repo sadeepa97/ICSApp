@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="{{ app()->getLocale() }}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{asset('css/app.css')}}">
+        <title>{{config('app.name','ICSapp')}}</title>
+
+
+
+    </head>
+    <body>
+        @include ('inc.navbar')
+        <div class="container">
+            @include('inc.messages')
+            @yield('content')
+        </div>
+
+        <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace( 'article-ckeditor' );
+        </script>
+
+    </body>
+    </html>
+
+
+ <nav class="navbar navbar-inverse">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <ul class="navbar-nav mr-auto">
+                                <li class="nav-item active">
+                                    <a class="nav-link"  href="/">Home <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/CStocks">Current Stocks</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Stocks" >Delivered Items</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/stocks" >Blog</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/stocks/create" class="btn bt-default">Add items</a>
+                                </li>
+
+                            </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+                <link rel="stylesheet" href="{{asset('css/app.css')}}">
+
+
+
+
+                {{config('app.name','ICSapp')}}
+
+                <li class="nav-item dropdown">
+                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            {{ Auth::user()->name }} <span class="caret"></span>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                               onclick="event.preventDefault();
+                                                                     document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                @csrf
+                                            </form>
+                                        </div>
+                                    </li>
+
+
+
+
+//my app.blade
+
+<!doctype html>
+<html lang="{{ app()->getLocale() }}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{asset('css/app.css')}}">
+        <title>{{config('app.name','ICSapp')}}</title>
+
+
+
+    </head>
+    <body>
+    <div id="app">
+        @include('inc.navbar')
+        <div class="container">
+            @include('inc.messages')
+            @yield('content')
+        </div>
+        </div>
+
+    </body>
+    </html>
+
+
+index.blade.php(ics)
+@extends('layouts.app')
+
+
+@section('content')
+
+    <h1>Stock Blog</h1>
+    @if (count($stocks)>0)
+        @foreach($stocks as $stock)
+            <div class = "card">
+                <div class="row">
+                    <div class="cl-md-4 col-sm-4">
+                         <img style="width:100%" src="/storage/cover_images/{{$stock->cover_image}}">
+                    </div>
+                    <div class="cl-md-8 col-sm-8">
+                        <h5>Article no. : <a href ="/stocks/{{$stock->article_no}}"> {{ $stock->article_no}}</a> </h5>
+                        <h5>Colour : {{ $stock-> colour}} </h5>
+                        <h5>Qty. : {{ $stock-> quantity}} </h5>
+                        <h5>Location: {{ $stock-> location}} </h5>
+                        <h5>Collection : {{ $stock-> collection}} </h5>
+                        <small> Written on {{$stock->created_at}} </small>
+
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+     @else
+        <p>No posts found.</p>
+
+
+    @endif
+
+@endsection
+
+
+
+
+<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            empor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+
+                            <div class="table-responsive table-fit">
+                                <a href="inventories/create" class="btn btn-primary float-right">+ Add Inventory Item</a>
+                                <br><br>
+                                <table class="table table-striped" id="myTable">
+                                    <thead class="thead-dark">
+
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Item ID</th>
+                                    <th scope="col">Quantity</th>
+
+                                    <th scope="col">Operations</th>
+
+                                    </thead>
+                                    <tbody>
+
+                                    @foreach($stocks as $stock)
+                                        <tr>
+
+                                            <th scope="row">{{$inventory->name}}</th>
+                                            <th>{{$inventory->id}}</th>
+                                            <th>{{$inventory->qty}}</th>
+
+                                            <th>
+
+                                                {!!Form::open(['action' => ['InventoryController@destroy', $inventory->id], 'method' => 'POST' ,'class' => 'pull-right'])!!}
+                                                {{Form::hidden('_method', 'DELETE')}}
+                                                <a href="/inventories/{{$inventory->id}}/edit" class="btn btn-warning">Edit</a>
+                                                {{Form::submit('Delete', ['class' => 'btn btn-danger'])}}
+                                                {!!Form::close()!!}
+                                            </th>
+
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div></div>
+
+
+                            <table>
+                                    <body>
+                                           @foreach($stocks as $stock)
+                                                <tr>
+                                                       <th scope="row"> {{$inventory->name}}</th>
+                                                       <th> {{inventory->id}}</th>
+                                                       <th>{{$inventory->qty}}</th>
+                                                       <th>
+                                                            {!!Form::open(['action'=>['inventoryController@destroy',$inventory->id],'method' =>'POST','class' => 'pull-right'])!!}
+                                                            {{Form::hidden('_method', 'DELETE')}}
+                                                            <a href="/inventoriese/{{@inventory->id}}/edit" class="btn btn-warning">Edit</a>
+                                                            {{Form:submit('Delete',['class' => 'btn btn-danger'])}}
+                                                            {!!Form::close()!!}
+                                                       </th>
+                                                </tr>
+                                           @endforeach
+
+
+                                    </body>
+                            </table>
+
+
+
